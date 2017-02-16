@@ -36,7 +36,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     MemoAdapter adapter;
     Context context = null;
     View view = null;
-    Button btn_plus;
     ListInterface listInterface;
     FloatingActionMenu materialDesignFAM;
     FloatingActionButton floatingActionButton1, floatingActionButton2;
@@ -72,9 +71,9 @@ public class ListFragment extends Fragment implements View.OnClickListener{
                              Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.fragment_memo_list, container, false);
-        materialDesignFAM = (FloatingActionMenu) view.findViewById(R.id.material_design_android_floating_action_menu);
-        floatingActionButton1 = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_item1);
-        floatingActionButton2 = (FloatingActionButton) view.findViewById(R.id.material_design_floating_action_menu_item2);
+        materialDesignFAM = (FloatingActionMenu) view.findViewById(R.id.list_floating_action_menu);
+        floatingActionButton1 = (FloatingActionButton) view.findViewById(R.id.list_floating_action_menu_quick);
+        floatingActionButton2 = (FloatingActionButton) view.findViewById(R.id.list_floating_action_menu_detail);
 
         // Set the adapter
         Context context = getContext();
@@ -88,7 +87,6 @@ public class ListFragment extends Fragment implements View.OnClickListener{
         recyclerView.setAdapter(adapter);
         floatingActionButton1.setOnClickListener(this);
         floatingActionButton2.setOnClickListener(this);
-
         return view;
     }
 
@@ -123,16 +121,17 @@ public class ListFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.material_design_floating_action_menu_item1 :
+            case R.id.list_floating_action_menu_quick :
                 quickAddAlert();
                 materialDesignFAM.close(true);
                 break;
-            case R.id.material_design_floating_action_menu_item2 :
+            case R.id.list_floating_action_menu_detail :
                 listInterface.goDetail();
                 materialDesignFAM.close(true);
                 break;
         }
     }
+
     public void quickAddAlert() {
         // LayoutInflater를 통해 위의 custom layout을 AlertDialog에 반영. 이 외에는 거의 동일하다.
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(LAYOUT_INFLATER_SERVICE);

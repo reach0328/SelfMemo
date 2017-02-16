@@ -15,7 +15,7 @@ import java.sql.SQLException;
 public class DBHelper extends OrmLiteSqliteOpenHelper {
 
     public static final String DATABASE_NAME = "memo.db";
-    public static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 2;
 
     public DBHelper(Context context) {
         super(context, DATABASE_NAME, null, DB_VERSION);

@@ -16,7 +16,7 @@
         tools:listitem="@layout/fragment_memo"/>
 
     <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/material_design_android_floating_action_menu"
+        android:id="@+id/list_floating_action_menu"
         android:layout_width="wrap_content"
         android:layout_height="282dp"
         android:layout_alignParentBottom="true"
@@ -49,14 +49,14 @@
         fab:menu_labels_textColor="#f2f1f1"
         fab:menu_labels_textSize="15sp"
         fab:menu_openDirection="up"
-        fab:menu_shadowColor="#66aff198"
+        fab:menu_shadowColor="#665f635d"
         fab:menu_shadowRadius="4dp"
         fab:menu_shadowXOffset="1dp"
         fab:menu_shadowYOffset="4dp"
         fab:menu_showShadow="true">
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item1"
+            android:id="@+id/list_floating_action_menu_quick"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="빠른 추가"
@@ -64,7 +64,7 @@
             fab:menu_icon="@drawable/fab_add"/>
 
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/material_design_floating_action_menu_item2"
+            android:id="@+id/list_floating_action_menu_detail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             fab:fab_label="추가"

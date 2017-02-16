@@ -5,9 +5,6 @@ import com.j256.ormlite.table.DatabaseTable;
 
 import java.util.Date;
 
-/**
- * Created by JH on 2017-02-14.
- */
 @DatabaseTable(tableName = "memo")
 public class Memo {
     @DatabaseField(generatedId = true)
@@ -16,6 +13,16 @@ public class Memo {
     String memo;
     @DatabaseField
     Date date;
+    @DatabaseField
+    String imgUri;
+
+    public String getImgUri() {
+        return imgUri;
+    }
+
+    public void setImgUri(String imgUri) {
+        this.imgUri = imgUri;
+    }
 
     public Date getDate() {
         return date;

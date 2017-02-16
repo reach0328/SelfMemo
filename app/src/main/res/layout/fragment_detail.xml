@@ -1,40 +1,100 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
     android:layout_height="match_parent"
-    tools:context="com.android.jh.memobasic.DetailFragment"
+    tools:context="com.android.jh.selfmemo.DetailFragment"
     android:background="#FFFFFF">
 
-    <!-- TODO: Update blank fragment layout -->
-
-    <Button
-        android:text="save"
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/detail_floating_action_menu"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:id="@+id/btn_save" />
+        android:layout_height="282dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="11dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginRight="11dp"
+        fab:menu_animationDelayPerItem="55"
+        fab:menu_backgroundColor="@android:color/transparent"
+        fab:menu_buttonSpacing="0dp"
+        fab:menu_colorNormal="#2f65da"
+        fab:menu_colorPressed="#dc4b3f"
+        fab:menu_colorRipple="#99d4d4d4"
+        fab:menu_fab_label=""
+        fab:menu_fab_size="normal"
+        fab:menu_icon="@drawable/fab_add"
+        fab:menu_labels_colorNormal="#333"
+        fab:menu_labels_colorPressed="#444"
+        fab:menu_labels_colorRipple="#66efecec"
+        fab:menu_labels_cornerRadius="3dp"
+        fab:menu_labels_ellipsize="none"
+        fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
+        fab:menu_labels_margin="0dp"
+        fab:menu_labels_maxLines="-1"
+        fab:menu_labels_padding="8dp"
+        fab:menu_labels_position="left"
+        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
+        fab:menu_labels_showShadow="true"
+        fab:menu_labels_singleLine="false"
+        fab:menu_labels_textColor="#f2f1f1"
+        fab:menu_labels_textSize="15sp"
+        fab:menu_openDirection="up"
+        fab:menu_shadowColor="#66242623"
+        fab:menu_shadowRadius="4dp"
+        fab:menu_shadowXOffset="1dp"
+        fab:menu_shadowYOffset="4dp"
+        fab:menu_showShadow="true">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/detail_floating_action_menu_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_label="사진 추가"
+            fab:fab_size="mini"
+            fab:menu_icon="@drawable/fab_add"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/detail_floating_action_menu_add"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_label="저장"
+            fab:menu_icon="@drawable/fab_add"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/detail_floating_action_menu_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            fab:fab_label="취소"
+            fab:menu_icon="@drawable/fab_add"
+            fab:fab_size="mini" />
+
+    </com.github.clans.fab.FloatingActionMenu>
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPersonName"
         android:ems="10"
-        android:layout_below="@+id/btn_save"
-        android:layout_alignParentStart="true"
         android:id="@+id/et_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
         android:gravity="top"
         android:hint="input your memo"
-        android:paddingLeft="10dp" />
+        android:paddingLeft="10dp"
+        android:maxLength="30"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:maxLines="5" />
 
-    <Button
-        android:text="Cancle"
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toStartOf="@+id/btn_save"
-        android:id="@+id/btn_cancle" />
+        fab:srcCompat="@mipmap/ic_launcher"
+        android:id="@+id/detail_img"
+        android:layout_below="@+id/et_content"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/detail_floating_action_menu"
+        android:scaleType="fitStart"
+        android:visibility="gone" />
 
 </RelativeLayout>

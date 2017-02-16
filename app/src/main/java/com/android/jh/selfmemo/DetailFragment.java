@@ -1,31 +1,47 @@
 package com.android.jh.selfmemo;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.android.jh.selfmemo.domain.Memo;
 import com.android.jh.selfmemo.interfaces.DetailInterface;
+import com.bumptech.glide.Glide;
+import com.github.clans.fab.FloatingActionButton;
+import com.github.clans.fab.FloatingActionMenu;
 
 import java.sql.SQLException;
 import java.util.Date;
 
+import static android.app.Activity.RESULT_OK;
+
 public class DetailFragment extends Fragment implements View.OnClickListener {
 
-    int position = -1;
+    // 카메라 요청 코드
+    private final int REQ_CAMERA = 101;
+    // 겔러리 요청 코드
+    private final int REQ_GALLERY = 102;
+
     boolean flag = false;
     Context context = null;
     View view = null;
-    Button btn_save, btn_cancel;
+    ImageView imgView;
     EditText et_Memo;
     DetailInterface detailInterface;
-    Memo memo, before;
+    Memo memo;
+    FloatingActionMenu materialDesignFAM;
+    FloatingActionButton floatingActionButton1, floatingActionButton2, floatingActionButton3;
+    Uri fileUri = null;
+
     public DetailFragment() {
         // Required empty public constructor
     }
@@ -39,7 +55,6 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
@@ -48,12 +63,16 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         if(view != null)
             return view;
         view =inflater.inflate(R.layout.fragment_detail, container, false);
-        btn_save = (Button)view.findViewById(R.id.btn_save);
-        btn_cancel = (Button)view.findViewById(R.id.btn_cancle);
+        materialDesignFAM = (FloatingActionMenu) view.findViewById(R.id.detail_floating_action_menu);
+        floatingActionButton1 = (FloatingActionButton) view.findViewById(R.id.detail_floating_action_menu_picture);
+        floatingActionButton2 = (FloatingActionButton) view.findViewById(R.id.detail_floating_action_menu_add);
+        floatingActionButton3 = (FloatingActionButton) view.findViewById(R.id.detail_floating_action_menu_cancel);
         et_Memo = (EditText)view.findViewById(R.id.et_content);
-        btn_save.setOnClickListener(this);
-        btn_cancel.setOnClickListener(this);
+        imgView = (ImageView) view.findViewById(R.id.detail_img);
         Log.i("create","==================================="+et_Memo.getText());
+        floatingActionButton1.setOnClickListener(this);
+        floatingActionButton2.setOnClickListener(this);
+        floatingActionButton3.setOnClickListener(this);
         return view;
     }
     @Override
@@ -64,11 +83,11 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
 
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
         Log.i("attach","==================================="+et_Memo.getText());
-        et_Memo.setText("");
         if(flag){
             Log.i("attach","==================================="+memo.getMemo());
             et_Memo.setText(memo.getMemo());
@@ -79,10 +98,15 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
-            case R.id.btn_save :
+            case R.id.detail_floating_action_menu_picture :
+                getPicture();
+                break;
+            case R.id.detail_floating_action_menu_add :
                 if(flag) {
                     try {
                         memo.setMemo(et_Memo.getText().toString());
+                        memo.setImgUri(fileUri.toString());
+                        imgView.setVisibility(View.GONE);
                         detailInterface.updateToLIst(memo);
                         flag = false;
                     } catch (SQLException e) {
@@ -91,17 +115,19 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
                 } else {
                     try {
                         Memo memo = makeMemo();
+                        imgView.setVisibility(View.GONE);
                         detailInterface.saveToList(memo);
                     } catch (SQLException e) {
                         e.printStackTrace();
                     }
                 }
                 break;
-            case R.id.btn_cancle :
+            case R.id.detail_floating_action_menu_cancel :
                 detailInterface.backToList();
-                et_Memo.setText(" ");
+                resetText();
                 Log.i("cancel","==================================="+et_Memo.getText());
                 flag = false;
+                imgView.setVisibility(View.GONE);
                 break;
         }
     }
@@ -109,6 +135,7 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
     private Memo makeMemo() {
         Memo memo = new Memo();
         memo.setMemo(et_Memo.getText().toString());
+        memo.setImgUri(fileUri.toString());
         memo.setDate(new Date(System.currentTimeMillis()));
         return memo;
     }
@@ -118,5 +145,34 @@ public class DetailFragment extends Fragment implements View.OnClickListener {
         Log.i("update","====================="+memo.getMemo());
         Log.i("MEMEMEMEMME","----------------------------"+memo.getId());
         flag = true;
+    }
+
+    public void resetText() {
+        if(et_Memo.getText().toString() != null)
+            et_Memo.setText("");
+    }
+
+    public void getPicture() {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.setType("image/*");//외부 저장소에 있는 이미지만 가져오기 위한 필터리
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), REQ_GALLERY);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQ_GALLERY:
+                if (resultCode == RESULT_OK) {
+                    fileUri = data.getData();
+                    Log.i("file","============================================"+fileUri.toString());
+                    Glide.with(this)
+                            .load(fileUri)
+                            .into(imgView);
+                    Log.i("file","============================================"+imgView.getId());
+                    imgView.setVisibility(View.VISIBLE);
+                }
+                break;
+        }
     }
 }
